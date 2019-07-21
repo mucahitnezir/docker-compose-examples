@@ -1,0 +1,32 @@
+version: '3.4'
+
+services:
+  elasticsearch:
+    image: elasticsearch:7.2.0
+    container_name: elasticsearch_dev
+    restart: always
+    environment:
+      - discovery.type=single-node
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - elastic-data:/usr/share/elasticsearch/data
+    networks:
+      - elastic
+  kibana:
+    image: kibana:7.2.0
+    container_name: kibana_dev
+    restart: always
+    ports:
+      - "5601:5601"
+    networks:
+      - elastic
+    depends_on:
+      - elasticsearch
+
+volumes:
+  elastic-data: {}
+
+networks:
+  elastic: {}
